@@ -41,9 +41,41 @@ There is no clock! Decisions must be made on messages received and local computa
 Assume a network contains at least two nodes. Then the network can be divided in two disjoint, non-empty sets {G1, G2}. Let V0 be the state of an atomic object. Let a write operation not equal to V0 occur in G1. Assume that no packets can be sent between G1 and G2. Because of the availability property, this request will be satisfied. Next, assume a read operation is sent to G2 and again no packets can be shared between G1 and G2. Again, because of the availability property, this request will be satisfied but will return V0, and not the modified value. Hence, this contradicts the atomic consistency property.
 
 
+### Achieving any two of C, A and P is possible
 
 
+#### C and P
+Trivial example: a system that ignores all requests.
 
+
+#### C and A
+Since there are no network partitions, this is pretty straight forward.
+
+#### A and P
+The proof above is an example where A and P can be ensured without ensuring C.
+
+#### Note
+Centralised algorithms seem to be examples for each of these scenarios.
+
+
+#### Partially Synchronous Model
+Each node has a clock of its own and each clock 'ticks' at the same rate. However, these clocks are not necessarily synchronised with each other.
+
+##### Impossibility Result for the Partially Synchronous Model
+Essentially the same proof as above. This time, ensure there is a significantly long duration for the write operation to fully complete before the read request is issued. The same result is reached.
+
+#### Delayed-t-Consistency
+Similar to the idea of 'eventually consistent data'.
+
+- A partial order where all write operations are ordered and all read operations are ordered with respect to the write operations. 
+- Atomicity is ensured.
+- If for a period longer than 't', no messages are lost, then events that occur  before and after this interval are ordered correctly. 
+
+Essentially this allows for some stale data when messages are lost. Similar to "eventually consistent data". However, eventual consistency is generally used to ensure high availability. Here is being used to ensure weak consistency.
+
+### Final Thoughts
+
+Really well written theoretical CS paper. Got a sound understanding of C, A and P which I didn't really have before. The final Delayed-t-Consistency in a partially synchronous network model was achieved through a centralized algorithm. Is it possible to achieve some consistency similar in a distributed algorithm?
 
 
 
